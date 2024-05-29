@@ -1,15 +1,11 @@
 import express from "express";
 import morgan from "morgan";
-// import { verifyRequestOrigin } from "lucia";
 
-import { lucia } from "./lib/auth.js";
+import { authMiddleware } from "./src/middleware/auth.middleware.js";
 
-import { mainRouter } from "./routes/index.js";
-import { loginRouter } from "./routes/login.js";
-import { signupRouter } from "./routes/signup.js";
-import { logoutRouter } from "./routes/logout.js";
-
-import type { User, Session } from "lucia";
+import authRouter from "./src/routes/auth.route.js";
+import employeeRouter from "./src/routes/employee.route.js";
+import recordRouter from "./src/routes/record.route.js";
 
 const app = express();
 
@@ -18,59 +14,13 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(morgan("dev"));
 
-// app.use((req, res, next) => {
-//   if (req.method === "GET") {
-//     return next();
-//   }
-//   const originHeader = req.headers.origin ?? null;
-//   const hostHeader = req.headers.host ?? null;
-//   if (
-//     !originHeader ||
-//     !hostHeader ||
-//     !verifyRequestOrigin(originHeader, [hostHeader])
-//   ) {
-//     return res.status(403).end();
-//   }
-//   return next();
-// });
+app.use(authMiddleware.verifyRequest);
+app.use(authMiddleware.validateRequest);
 
-app.use(async (req, res, next) => {
-  const sessionId = lucia.readSessionCookie(req.headers.cookie ?? "");
-  if (!sessionId) {
-    res.locals.user = null;
-    res.locals.session = null;
-    return next();
-  }
-
-  const { session, user } = await lucia.validateSession(sessionId);
-  if (session && session.fresh) {
-    res.appendHeader(
-      "Set-Cookie",
-      lucia.createSessionCookie(session.id).serialize()
-    );
-  }
-  if (!session) {
-    res.appendHeader(
-      "Set-Cookie",
-      lucia.createBlankSessionCookie().serialize()
-    );
-  }
-  res.locals.session = session;
-  res.locals.user = user;
-  return next();
-});
-
-app.use(mainRouter, loginRouter, signupRouter, logoutRouter);
+app.use("/", authRouter);
+app.use("/employees", employeeRouter);
+app.use("/records", recordRouter);
 
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
-
-declare global {
-  namespace Express {
-    interface Locals {
-      user: User | null;
-      session: Session | null;
-    }
-  }
-}

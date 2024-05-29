@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "AttendanceRecord" ALTER COLUMN "loggedAt" SET DEFAULT CURRENT_TIMESTAMP;

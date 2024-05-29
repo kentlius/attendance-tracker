@@ -7,5 +7,6 @@ export type DatabaseUser = Prisma.UserGetPayload<{
     id: true;
     username: true;
     password: true;
+    role: true;
   };
 }>;
