@@ -10,7 +10,7 @@ export const validateRequest = cache(async () => {
     };
   }
 
-  const result = await fetch(`${process.env.API_SERVER_URL}`, {
+  const result = await fetch(`${process.env.NEXT_PUBLIC_API_URL}`, {
     headers: {
       cookie: sessionId,
     },

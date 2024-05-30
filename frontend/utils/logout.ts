@@ -6,7 +6,7 @@ export async function logout() {
     return null;
   }
 
-  const res = await fetch(`${process.env.API_SERVER_URL}/logout`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/logout`, {
     method: "POST",
     headers: {
       cookie: sessionId,
