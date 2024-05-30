@@ -20,7 +20,7 @@ export const authController = {
       !username ||
       username.length < 3 ||
       username.length > 31 ||
-      !/^[a-z0-9_-]+$/.test(username)
+      !/^[a-z0-9._-]+$/.test(username)
     ) {
       return res.status(400).send({
         error: "Invalid username",
@@ -70,7 +70,7 @@ export const authController = {
       !username ||
       username.length < 3 ||
       username.length > 31 ||
-      !/^[a-z0-9_-]+$/.test(username)
+      !/^[a-z0-9._-]+$/.test(username)
     ) {
       return res.status(400).send({
         error: "Invalid username",
