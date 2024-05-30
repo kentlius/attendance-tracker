@@ -9,4 +9,6 @@ router.post("/", employeeController.createEmployee);
 router.put("/:id", employeeController.updateEmployee);
 router.delete("/:id", employeeController.deleteEmployee);
 
+router.get("/:id/records", employeeController.getAttendanceRecords);
+
 export default router;

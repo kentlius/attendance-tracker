@@ -30,4 +30,10 @@ export const employeeService = {
       where: { id: id },
     });
   },
+
+  async getAttendanceRecords(id: string) {
+    return await prisma.attendanceRecord.findMany({
+      where: { employeeId: id },
+    });
+  },
 };

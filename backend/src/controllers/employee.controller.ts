@@ -54,4 +54,14 @@ export const employeeController = {
       res.status(500).json({ error: "Error deleting employee" });
     }
   },
+
+  async getAttendanceRecords(req: Request, res: Response) {
+    const { id } = req.params;
+    try {
+      const attendanceRecords = await employeeService.getAttendanceRecords(id);
+      res.json(attendanceRecords);
+    } catch (error) {
+      res.status(500).json({ error: "Error getting attendance records" });
+    }
+  },
 };
