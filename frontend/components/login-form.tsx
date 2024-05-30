@@ -30,7 +30,12 @@ export function LoginForm() {
       body: JSON.stringify(rawFormData),
     });
 
-    cookies().set("auth-session", res.headers.getSetCookie()[0]);
+    cookies().set("khongguan", res.headers.getSetCookie()[0], {
+      httpOnly: true,
+      maxAge: 60 * 60 * 24 * 7,
+      path: "/",
+      sameSite: "lax",
+    });
 
     redirect("/");
   }

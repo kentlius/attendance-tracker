@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import { cache } from "react";
 
 export const validateRequest = cache(async () => {
-  const sessionId = cookies().get("auth-session")?.value ?? null;
+  const sessionId = cookies().get("khongguan")?.value ?? null;
   if (!sessionId) {
     return {
       user: null,

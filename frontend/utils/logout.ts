@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 
 export async function logout() {
-  const sessionId = cookies().get("auth-session")?.value ?? null;
+  const sessionId = cookies().get("khongguan")?.value ?? null;
   if (!sessionId) {
     return null;
   }
