@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { AttendanceStatus, PrismaClient, UserRole } from "@prisma/client";
 import { faker } from "@faker-js/faker";
 
 import { Argon2id } from "oslo/password";
@@ -17,11 +17,11 @@ async function main() {
     id: generateId(15),
     username: "hrd",
     password: await new Argon2id().hash("hrd123"),
-    role: "HR",
+    role: UserRole.HR,
   };
 
   await prisma.user.createMany({
-    data: [userAdmin, userHR],
+    data: await Promise.all([userAdmin, userHR]),
   });
 
   const users = Array.from({ length: 10 }, async () => ({
@@ -51,6 +51,8 @@ async function main() {
     Array.from({ length: 20 }, () => ({
       employeeId: employee.id,
       imageUrl: faker.image.urlLoremFlickr({ category: "people" }),
+      status: AttendanceStatus.ON_TIME,
+      loggedAt: faker.date.recent({ days: 1 }),
     }))
   );
 

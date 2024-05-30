@@ -40,6 +40,7 @@ model AttendanceRecord {
   employee   Employee @relation(fields: [employeeId], references: [id])
   loggedAt   DateTime @default(now())
   imageUrl   String
+  status     AttendanceStatus
 }
 
 enum UserRole {
@@ -51,4 +52,11 @@ enum EmploymentStatus {
   ACTIVE
   ON_LEAVE
   TERMINATED
+}
+
+enum AttendanceStatus {
+  EARLY
+  ON_TIME
+  LATE
+  ABSENT
 }

@@ -30,4 +30,16 @@ export const recordService = {
       where: { id: id },
     });
   },
+
+  async checkTodayAttendance(employeeId: string) {
+    return await prisma.attendanceRecord.findFirst({
+      where: {
+        employeeId: employeeId,
+        loggedAt: {
+          gte: new Date(new Date().setHours(0, 0, 0, 0)),
+          lt: new Date(new Date().setHours(23, 59, 59, 999)),
+        },
+      },
+    });
+  },
 };

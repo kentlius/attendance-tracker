@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import { recordService } from "../services/record.service.js";
+import { AttendanceStatus } from "@prisma/client";
 
 export const recordController = {
   async getRecordById(req: Request, res: Response) {
@@ -14,14 +15,38 @@ export const recordController = {
   },
 
   async createRecord(req: Request, res: Response) {
-    const image = req.file;
-    const employeeId: string = req.body.employeeId;
+    const { employeeId } = req.body;
 
+    // const existingRecord = await recordService.checkTodayAttendance(employeeId);
+    // if (existingRecord) {
+    //   return res.status(400).send("Attendance already recorded for today.");
+    // }
+
+    // const scheduledStartTime = new Date("2024-05-01T09:00:00Z");
+    // const attendanceTime = new Date();
+
+    // const diff = attendanceTime - scheduledStartTime;
+
+    // const earlyThreshold = -15 * 60 * 1000; // 15 minutes early
+    // const onTimeThreshold = 5 * 60 * 1000; // 5 minutes late
+
+    // let status;
+    // if (diff < earlyThreshold) {
+    //   status = "EARLY";
+    // } else if (diff <= onTimeThreshold) {
+    //   status = "ON_TIME";
+    // } else {
+    //   status = "LATE";
+    // }
+
+    const image = req.file;
     const record = {
       imageUrl: image!.path,
       employee: {
         connect: { id: employeeId },
       },
+      // loggedAt: attendanceTime,
+      status: AttendanceStatus.ON_TIME,
     };
 
     const newRecord = await recordService.createRecord(record);
