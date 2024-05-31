@@ -55,6 +55,16 @@ export const employeeController = {
     }
   },
 
+  async getEmployeeByUserId(req: Request, res: Response) {
+    const { id } = req.params;
+    try {
+      const employee = await employeeService.getEmployeeByUserId(id);
+      res.json(employee);
+    } catch (error) {
+      res.status(500).json({ error: "Error getting employee" });
+    }
+  },
+
   async getAttendanceRecords(req: Request, res: Response) {
     const { id } = req.params;
     try {
@@ -62,6 +72,16 @@ export const employeeController = {
       res.json(attendanceRecords);
     } catch (error) {
       res.status(500).json({ error: "Error getting attendance records" });
+    }
+  },
+
+  async checkAttendanceRecord(req: Request, res: Response) {
+    const { id } = req.params;
+    try {
+      const attendanceRecord = await employeeService.checkAttendanceRecord(id);
+      res.json(attendanceRecord);
+    } catch (error) {
+      res.status(500).json({ error: "Error checking attendance record" });
     }
   },
 };

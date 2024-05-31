@@ -8,6 +8,26 @@ export const userService = {
     });
   },
 
+  async getUserById(id: string) {
+    return await prisma.user.findUnique({
+      where: { id: id },
+      select: {
+        id: true,
+        username: true,
+        role: true,
+        createdAt: true,
+        employee: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            userId: true,
+          },
+        },
+      },
+    });
+  },
+
   async getUsers() {
     return await prisma.user.findMany();
   },

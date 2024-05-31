@@ -10,5 +10,6 @@ router.put("/:id", employeeController.updateEmployee);
 router.delete("/:id", employeeController.deleteEmployee);
 
 router.get("/:id/records", employeeController.getAttendanceRecords);
+router.get("/:id/check", employeeController.checkAttendanceRecord);
 
 export default router;

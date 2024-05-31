@@ -5,8 +5,10 @@ import { useState, useRef } from "react";
 import Webcam from "react-webcam";
 import { Camera, RefreshCcw, Check } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { revalidateTag } from "next/cache";
+import { validateRequest } from "@/lib/auth";
 
-export function CameraComponent() {
+export function CameraComponent(props: { employeeId: string }) {
   const router = useRouter();
 
   const [image, setImage] = useState<string | null>(null);
@@ -32,9 +34,24 @@ export function CameraComponent() {
           </div>
           <div
             className="absolute bottom-4 right-4 bg-white p-2 rounded-full cursor-pointer"
-            onClick={() => {
-              console.log("uploading image");
-              router.push("/dashboard/employees");
+            onClick={async () => {
+              const response = await fetch(image);
+              const blob = await response.blob();
+              const file = new File([blob as Blob], "image.jpg", {
+                type: "image/jpeg",
+              });
+
+              const formData = new FormData();
+              formData.append("image", file);
+              formData.append("employeeId", props.employeeId);
+
+              await fetch(`${process.env.NEXT_PUBLIC_API_URL}/records`, {
+                method: "POST",
+                body: formData,
+              });
+
+              // revalidateTag("attendance");
+              router.push("/");
             }}
           >
             <Check />

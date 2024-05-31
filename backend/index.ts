@@ -5,6 +5,7 @@ import morgan from "morgan";
 import { authMiddleware } from "./src/middleware/auth.middleware.js";
 
 import authRouter from "./src/routes/auth.route.js";
+import userRouter from "./src/routes/user.route.js";
 import employeeRouter from "./src/routes/employee.route.js";
 import recordRouter from "./src/routes/record.route.js";
 
@@ -26,6 +27,7 @@ app.use(authMiddleware.verifyRequest);
 app.use(authMiddleware.validateRequest);
 
 app.use("/", authRouter);
+app.use("/users", userRouter);
 app.use("/employees", employeeRouter);
 app.use("/records", recordRouter);
 

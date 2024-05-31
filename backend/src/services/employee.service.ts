@@ -31,9 +31,28 @@ export const employeeService = {
     });
   },
 
+  async getEmployeeByUserId(id: string) {
+    return await prisma.employee.findFirst({
+      where: { userId: id },
+    });
+  },
+
   async getAttendanceRecords(id: string) {
     return await prisma.attendanceRecord.findMany({
       where: { employeeId: id },
+    });
+  },
+
+  async checkAttendanceRecord(employeeId: string) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return await prisma.attendanceRecord.findFirst({
+      where: {
+        employeeId: employeeId,
+        loggedAt: {
+          gte: today,
+        },
+      },
     });
   },
 };
