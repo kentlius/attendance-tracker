@@ -27,7 +27,7 @@ model Session {
 model Employee {
   id          String             @id @default(uuid())
   userId      String             @unique
-  user        User               @relation(fields: [userId], references: [id])
+  user        User               @relation(fields: [userId], references: [id], onDelete: Cascade)
   firstName   String
   lastName    String
   status      EmploymentStatus   @default(ACTIVE)
@@ -35,10 +35,10 @@ model Employee {
 }
 
 model AttendanceRecord {
-  id         String   @id @default(uuid())
+  id         String           @id @default(uuid())
   employeeId String
-  employee   Employee @relation(fields: [employeeId], references: [id])
-  loggedAt   DateTime @default(now())
+  employee   Employee         @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  loggedAt   DateTime         @default(now())
   imageUrl   String
   status     AttendanceStatus
 }
