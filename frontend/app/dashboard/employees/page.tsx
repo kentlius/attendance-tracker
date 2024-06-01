@@ -1,4 +1,4 @@
-import { File, ListFilter, PlusCircle } from "lucide-react";
+import { File, ListFilter } from "lucide-react";
 
 import EmployeeTable from "@/components/employee-table";
 
@@ -20,9 +20,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { AddEmployee } from "@/components/add-employee";
 
 async function getEmployees() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/employees`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/employees`, {
+    next: {
+      tags: ["employees"],
+    },
+  });
 
   if (!res.ok) {
     throw new Error("Failed to fetch data");
@@ -79,12 +84,7 @@ export default async function Employees() {
                 Export
               </span>
             </Button>
-            <Button size="sm" className="h-8 gap-1">
-              <PlusCircle className="h-3.5 w-3.5" />
-              <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                Add Employee
-              </span>
-            </Button>
+            <AddEmployee />
           </div>
         </div>
         <TabsContent value="all">
