@@ -14,7 +14,7 @@ export const authMiddleware = {
       !hostHeader ||
       !verifyRequestOrigin(originHeader, [hostHeader])
     ) {
-      // return res.status(403).end();
+      return res.status(403).end();
     }
     return next();
   },

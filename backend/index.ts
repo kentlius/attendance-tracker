@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
+import path from "node:path";
 
 import { authMiddleware } from "./src/middleware/auth.middleware.js";
 
@@ -23,8 +24,10 @@ app.use(
 
 app.use(morgan("dev"));
 
-app.use(authMiddleware.verifyRequest);
+// app.use(authMiddleware.verifyRequest);
 app.use(authMiddleware.validateRequest);
+
+app.use("/uploads", express.static("uploads"));
 
 app.use("/", authRouter);
 app.use("/users", userRouter);
