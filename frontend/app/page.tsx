@@ -1,9 +1,18 @@
-import { redirect } from "next/navigation";
 import Image from "next/image";
+import { redirect } from "next/navigation";
 
 import { validateRequest } from "@/lib/auth";
 import { CameraComponent } from "@/components/camera";
 import { dateFormatter } from "@/utils/date-formatter";
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 async function getUserById(id: string) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/${id}`);
@@ -43,32 +52,37 @@ export default async function Home() {
   const attendanceRecord = await checkAttendanceRecord(employee.id);
 
   return (
-    <main className="">
+    <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
       {attendanceRecord ? (
-        <div>
-          <h1>Good morning, {employee.firstName}!</h1>
-          <p>You have already checked in today.</p>
-          <div>
-            <p>
-              Logged at{" "}
-              <time>
-                {dateFormatter.format(new Date(attendanceRecord.loggedAt))}
-              </time>
-            </p>
-            <p>Status: {attendanceRecord.status}</p>
+        <Card>
+          <CardHeader>
+            <CardTitle>Good morning, {employee.firstName}!</CardTitle>
+            <CardDescription>
+              You have already checked in today.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
             <Image
               className="aspect-square rounded-md object-cover"
-              height="64"
+              alt="Attendance record image"
               src={
                 !/^https?:\/\//.test(attendanceRecord.imageUrl)
                   ? `${process.env.NEXT_PUBLIC_API_URL}/${attendanceRecord.imageUrl}`
                   : attendanceRecord.imageUrl
               }
-              width="64"
-              alt="Attendance record image"
+              width={300}
+              height={300}
             />
-          </div>
-        </div>
+          </CardContent>
+          <CardFooter>
+            <div className="flex flex-col">
+              <time>
+                {dateFormatter.format(new Date(attendanceRecord.loggedAt))}
+              </time>
+              <p>{attendanceRecord.status}</p>
+            </div>
+          </CardFooter>
+        </Card>
       ) : (
         <CameraComponent employeeId={employee.id} />
       )}
