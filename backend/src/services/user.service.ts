@@ -28,8 +28,16 @@ export const userService = {
     });
   },
 
-  async getUsers() {
-    return await prisma.user.findMany();
+  async getUsers(isEmployed: boolean) {
+    const whereClause = isEmployed ? {} : { employee: null };
+
+    return await prisma.user.findMany({
+      where: whereClause,
+      select: {
+        id: true,
+        username: true,
+      },
+    });
   },
 
   async createUser(user: Prisma.UserCreateInput) {

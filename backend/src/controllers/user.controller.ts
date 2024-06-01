@@ -3,8 +3,9 @@ import { userService } from "../services/user.service.js";
 
 export const userController = {
   async getUsers(req: Request, res: Response) {
-    const users = await userService.getUsers();
-    res.json(users);
+    req.query.employed === "false"
+      ? res.json(await userService.getUsers(false))
+      : res.json(await userService.getUsers(true));
   },
 
   async getUserById(req: Request, res: Response) {
